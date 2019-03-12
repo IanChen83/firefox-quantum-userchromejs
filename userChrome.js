@@ -4,9 +4,9 @@
 
 // Set "useLionFullScreen" in the same way that it's done in
 // chrome://browser/content/browser-fullScreenAndPointerLock.js
-XPCOMUtils.defineLazyGetter(FullScreen, "useLionFullScreen", function() {
-    return false;
-});
+// XPCOMUtils.defineLazyGetter(FullScreen, "useLionFullScreen", function() {
+//     return false;
+// });
 
 // ==UserScript==
 // @name           FloatingScrollbar.uc.js
@@ -14,7 +14,7 @@ XPCOMUtils.defineLazyGetter(FullScreen, "useLionFullScreen", function() {
 // @include        main
 // @version        0.0.3
 // @note           Thanks to Griever(https://github.com/Griever/userChromeJS/blob/master/SmartScrollbar.uc.js) and Paul Rouget(https://gist.github.com/4003205)
-// @note...........0.0.3 Fixed a problem of breaking hbox layout 
+// @note...........0.0.3 Fixed a problem of breaking hbox layout
 // @note           0.0.2 Remove usage of E4X (https://bugzilla.mozilla.org/show_bug.cgi?id=788293)
 // ==/UserScript==
 
@@ -32,35 +32,58 @@ XPCOMUtils.defineLazyGetter(FullScreen, "useLionFullScreen", function() {
     @namespace url(http: //www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);\
     :not(select):not(hbox) > scrollbar {\
         -moz-appearance: none!important;\
-        position: relative;\
+        position: relative!important;\
+        box-sizing: border-box!important;\
         background-color: transparent;\
         background-image: none;\
         z-index: 2147483647;\
-        padding: 2px;\
-    }\
-    :not(select):not(hbox) > scrollbar[orient = "vertical"] {\
-        -moz-margin-start: -10px;\
-        min-width: 10px;\
-    }\
-    :not(select):not(hbox) > scrollbar[orient = "vertical"] thumb {\
-        min-height: 20px;\
-    }\
-   :not(select):not(hbox) > scrollbar[orient = "horizontal"] {\
-        margin-top: -10px;\
-        min-height: 10px;\
-    }\
-    :not(select):not(hbox) > scrollbar[orient = "horizontal"] thumb {\
-        min-width: 20px;\
+        padding: 0px;\
+        display: flex!important;\
+        justify-content: flex-end;\
+        pointer-events: auto;\
+        width: auto!important;\
     }\
     :not(select):not(hbox) > scrollbar thumb {\
         -moz-appearance: none!important;\
-        border-width: 0px!important;\
-        border-radius: 3px!important;\
-        background-color: rgba(190, 190, 190, 0.3)!important;\
+        border-radius: 0px!important;\
+        background-color: rgba(100, 100, 100, 0);\
+        pointer-events: auto;\
     }\
-    :not(select):not(hbox) > scrollbar thumb:active,\
+    :not(select):not(hbox) > scrollbar[orient = "vertical"] {\
+        width: 16px!important;\
+        -moz-margin-start: -16px;/*margin to fill the whole render window with content and overlay the scrollbars*/\
+    }\
+    :not(select):not(hbox) > scrollbar[orient = "horizontal"] {\
+        height: 16px!important;\
+        margin-top: -16px;\
+    }\
+    :not(select):not(hbox) > scrollbar[orient = "vertical"] thumb {\
+        border-left: 3px solid rgba(80, 80, 80, 0.75);\
+        min-height: 16px;\
+        transform: translate(11px, 0px);\
+        transition: transform 0.1s linear;\
+    }\
+    :not(select):not(hbox) > scrollbar[orient = "horizontal"] thumb {\
+        border-top: 3px solid rgba(80, 80, 80, 0.75);\
+        min-width: 16px;\
+        transform: translate(0px, 11px);\
+        transition: transform 0.1s linear;\
+    }\
+    :not(select):not(hbox) > scrollbar:hover {\
+        background-color: rgba(90, 90, 90, 0.15);\
+    }\
+    :not(select):not(hbox) > scrollbar:hover thumb {\
+        background-color: rgba(100, 100, 100, 0.5)!important;\
+        border-left: 0px;\
+        border-top: 0px;\
+        transform: translate(0px, 0px);\
+        transition: transform 0.1s linear;\
+    }\
     :not(select):not(hbox) > scrollbar thumb:hover {\
-        background-color: #9B9B9B!important;\
+        background-color: rgba(100, 100, 100, 0.8)!important;\
+    }\
+    :not(select):not(hbox) > scrollbar thumb:active {\
+        background-color: rgba(110, 110, 110, 1)!important;\
     }\
     :not(select):not(hbox) > scrollbar scrollbarbutton, :not(select):not(hbox) > scrollbar gripper {\
         display: none;\
